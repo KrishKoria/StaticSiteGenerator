@@ -1,6 +1,8 @@
 import unittest
 from src.inlinemarkdown import (
     split_nodes_delimiter,
+    extract_markdown_images,
+    extract_markdown_links,
 )
 
 from src.textnode import TextNode, TextType
@@ -85,7 +87,45 @@ class TestInlineMarkdown(unittest.TestCase):
             ],
             new_nodes,
         )
+    def test_extract_markdown_images(self):
+        text = "Here is an image ![alt text](http://example.com/image.jpg)"
+        images = extract_markdown_images(text)
+        self.assertListEqual(
+            [("alt text", "http://example.com/image.jpg")],
+            images,
+        )
 
+    def test_extract_markdown_images_multiple(self):
+        text = "First image ![first](http://example.com/first.jpg) and second image ![second](http://example.com/second.jpg)"
+        images = extract_markdown_images(text)
+        self.assertListEqual(
+            [
+                ("first", "http://example.com/first.jpg"),
+                ("second", "http://example.com/second.jpg"),
+            ],
+            images,
+        )
+
+    def test_extract_markdown_links(self):
+        text = "Here is a [link](http://example.com)"
+        links = extract_markdown_links(text)
+        self.assertListEqual(
+        [("link", "http://example.com")],
+        links,
+        )
+
+def test_extract_markdown_links_multiple(self):
+        text = "First [link](http://example.com/first) and second [link](http://example.com/second)"
+        links = extract_markdown_links(text)
+        self.assertListEqual(
+        [
+            ("link", "http://example.com/first"),
+            ("link", "http://example.com/second"),
+        ],
+            links,
+        )
+
+    
 
 if __name__ == "__main__":
     unittest.main()

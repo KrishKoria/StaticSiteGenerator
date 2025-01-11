@@ -9,7 +9,7 @@ def main():
     
     copy_directory(source_directory, destination_directory)
     
-    generate_page("./content/index.md", "template.html", "./public/index.html")
+    generate_pages_recursive("./content", "template.html", "./public")
 
 
 def copy_directory(src, dest):
@@ -51,6 +51,14 @@ def generate_page(from_path, template_path, dest_path):
     with open(dest_path, 'w') as file:
         file.write(full_html)
 
+def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
+    for root, dirs, files in os.walk(dir_path_content):
+        for file in files:
+            if file.endswith(".md"):
+                from_path = os.path.join(root, file)
+                relative_path = os.path.relpath(from_path, dir_path_content)
+                dest_path = os.path.join(dest_dir_path, os.path.splitext(relative_path)[0] + ".html")
+                generate_page(from_path, template_path, dest_path)
 
 
 if __name__ == "__main__":

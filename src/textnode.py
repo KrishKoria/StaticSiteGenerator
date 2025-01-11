@@ -1,4 +1,4 @@
-from src.leafnode import LeafNode
+from leafnode import LeafNode
 from enum import Enum
 
 

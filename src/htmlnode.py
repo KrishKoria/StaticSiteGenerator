@@ -3,7 +3,7 @@ class HTMLNode:
         self.tag = tag
         self.value = value
         self.children = children
-        self.props = props if props is not None else {}
+        self.props = props if props is not None else None
     
     def to_html(self):
         raise NotImplementedError
